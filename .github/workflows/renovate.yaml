@@ -1,0 +1,62 @@
+name: Renovate
+description: Renovate bot
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: Dry-Run
+        default: false
+        required: false
+        type: boolean
+      logLevel:
+        description: Log-Level
+        default: debug
+        required: false
+      version:
+        description: Renovate version
+        default: latest
+        required: false
+  schedule:
+    # The "*" (#42, asterisk) character has special semantics in YAML, so this
+    # string has to be quoted.
+    - cron: 0/15 * * * *
+  push:
+    branches: [main]
+    paths:
+      - .github/renovate.json5
+      - .github/renovate/**.json
+      - .github/renovate/**.json5
+      - .github/workflows/schedule-renovate.yaml
+jobs:
+  renovate:
+    runs-on: self-hosted
+    steps:
+      - name: Generate Token
+        id: get_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
+          private-key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Override Default Config
+        shell: bash
+        run: |
+          echo "RENOVATE_DRY_RUN=${{ github.event.inputs.dryRun || env.WORKFLOW_DRY_RUN }}" >> "${GITHUB_ENV}"
+          echo "LOG_LEVEL=${{ github.event.inputs.logLevel || env.WORKFLOW_LOG_LEVEL }}" >> "${GITHUB_ENV}"
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v41.0.5
+        with:
+          configurationFile: .github/renovate.json
+          token: ${{ steps.get_token.outputs.token }}
+          # token: ${{ secrets.RENOVATE_TOKEN }}
+          renovate-version: ${{ github.event.inputs.version || env.WORKFLOW_VERSION }}
+        env:
+          RENOVATE_PLATFORM_COMMIT: "true"
+          RENOVATE_PLATFORM: github
+          WORKFLOW_LOG_LEVEL: info
+          RENOVATE_AUTODISCOVER: true
