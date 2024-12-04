@@ -4,6 +4,26 @@
     'config:recommended',
   ],
   "autodiscover": true,
-  "includeForks": false // Исключить форки
+  "includeForks": false // Disable forked repos
+  platform: 'github',
+  onboarding: false,
+  requireConfig: 'optional',
+  dependencyDashboard: true,
+  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
+  suppressNotifications: [
+    'prEditedNotification',
+    'prIgnoreNotification',
+  ],
+  commitBodyTable: true,
+  rebaseWhen: 'conflicted',
+  assigneesFromCodeOwners: true,
+  reviewersFromCodeOwners: true,
+  major: {
+    dependencyDashboardApproval: true,
+  },
+  ignorePaths: [
+    '**/*.sops.*',
+    '**/configs/**',
+  ],
 }
 
