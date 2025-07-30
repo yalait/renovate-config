@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Generate Token
         id: get_token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
           private-key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
