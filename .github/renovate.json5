@@ -1,20 +1,28 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["config:recommended"],
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+  ],
   autodiscover: true,
-  includeForks: false, // Disable forked repos
-  platform: "github",
+  forkProcessing: 'disabled',
+  platform: 'github',
   onboarding: false,
-  requireConfig: "optional",
+  requireConfig: 'optional',
   dependencyDashboard: true,
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
-  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
+  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
+  suppressNotifications: [
+    'prEditedNotification',
+    'prIgnoreNotification',
+  ],
   commitBodyTable: true,
-  rebaseWhen: "conflicted",
+  rebaseWhen: 'conflicted',
   assigneesFromCodeOwners: true,
   reviewersFromCodeOwners: true,
   major: {
     dependencyDashboardApproval: true,
   },
-  ignorePaths: ["**/*.sops.*", "**/configs/**"],
+  ignorePaths: [
+    '**/*.sops.*',
+    '**/configs/**',
+  ],
 }
