@@ -42,7 +42,7 @@ jobs:
           private-key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.3.1
       - name: Override Default Config
         shell: bash
         run: |
